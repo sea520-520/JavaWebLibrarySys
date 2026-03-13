@@ -1,0 +1,17 @@
+body{
+    background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);
+}
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #80bdff;
+}
+th {
+    background-color: cadetblue;
+    border: none;
+}

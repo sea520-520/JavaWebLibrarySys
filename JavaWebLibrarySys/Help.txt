@@ -1,0 +1,55 @@
+    数据库连接测试
+    public static void main(String[] args) {
+        Connection conn = null;
+        try {
+            conn = new  JDBC.GetCorn().getConn();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("数据库驱动没有安装！");
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Connection conn = null;
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        Statement st = null;
+        //初始化rs，遍历结果表，下表1开始
+        ResultSet rs = null;
+
+        //查询语句
+        String select = "select * from user";
+
+        try {
+            conn = new  JDBC.GetCorn().getConn();
+            st = conn.createStatement();
+            rs = st.executeQuery(select);
+            while (rs.next()) {
+                String name = rs.getString(1); //可以获取返回结果的第一列
+                String pwd = rs.getString("password"); //也可以获取返回结果的列名
+                System.out.println(name+" "+pwd);
+            }
+            if (rs != null) {
+                rs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("数据库驱动没有安装！");
+        } catch (SQLException e){
+            e.printStackTrace();
+            System.out.println("数据库连接失败！");
+        }finally {
+            if (conn != null){
+                try {
+                    conn.close();
+                }catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+

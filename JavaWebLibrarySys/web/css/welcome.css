@@ -1,0 +1,30 @@
+.body_c
+{
+    background-image: url(../image/2.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.transbox
+{
+    background-color:#fff;
+    border:1px;
+    opacity:0.8;
+    border-radius: 20px;
+    width: 600px;
+    height: 340px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.transbox p {
+    margin: 30px 40px;
+    text-align: center;
+    font-weight: bold;
+    color: #000000;
+}
