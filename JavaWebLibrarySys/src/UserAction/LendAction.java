@@ -7,7 +7,6 @@ import entity.Book;
 import entity.Borrow;
 import entity.User;
 
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
