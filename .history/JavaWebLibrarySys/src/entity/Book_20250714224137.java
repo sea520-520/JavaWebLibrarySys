@@ -8,7 +8,7 @@ public class Book {
     private String dataime;
     private int flag;
 
-    public void Book() {
+    public void Book(){
 
     }
 

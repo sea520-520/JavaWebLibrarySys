@@ -13,16 +13,16 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@WebServlet("/AddAction")
-public class AddAction extends HttpServlet {
+@WebServlet("/ChangeAction")
+public class ChangeAction extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html");
-        LocalDateTime data = LocalDateTime.now();
+        LocalDateTime data_time = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String data_temp = data.format(formatter);
+        String data_temp = data_time.format(formatter);
         Book book = new Book();
         String ibsn = req.getParameter("ibsn");
         String name = req.getParameter("bookname");
@@ -30,7 +30,7 @@ public class AddAction extends HttpServlet {
         String place = req.getParameter("place");
         String flag_temp = req.getParameter("flag");
         int flag = 0;
-        if (flag_temp.equals("可借")) {
+        if (flag_temp.equals("可借")){
             flag = 1;
         }
         book.setIbsn(ibsn);
@@ -40,16 +40,15 @@ public class AddAction extends HttpServlet {
         book.setDataime(data_temp);
         book.setFlag(flag);
         BookDao bdao = new BookDao();
-        boolean f = bdao.insertbook(book);
-        if (f) {
+        boolean f = bdao.changebook(book);
+        if (f){
             HttpSession session = req.getSession();
-            session.setAttribute("insert", true);
-            resp.sendRedirect("/Library/insertbook.jsp");
-        } else {
+            session.setAttribute("change",true);
+            resp.sendRedirect("/Library/changebook.jsp");
+        }else {
             HttpSession session = req.getSession();
-            session.setAttribute("insert", false);
-            session.setAttribute("error_info", "图书编号重复或图书已存在");
-            resp.sendRedirect("/Library/insertbook.jsp");
+            session.setAttribute("change",false);
+            resp.sendRedirect("/Library/changebook.jsp");
         }
     }
 

@@ -28,21 +28,21 @@ public class DeleteAction extends HttpServlet {
         book.setName(name);
         BookDao bdao = new BookDao();
         List = bdao.ifborrowbook(borrow);
-        if (List != null && List.size() > 0) {
+        if (List != null && List.size()>0){
             HttpSession session = req.getSession();
-            session.setAttribute("message", false);
-            session.setAttribute("error_del_admin", "剩余书籍未归还，暂不能删除");
+            session.setAttribute("message",false);
+            session.setAttribute("error_del_admin","剩余书籍未归还，暂不能删除");
             resp.sendRedirect("/Library/deletebook.jsp");
-        } else {
+        }else {
             boolean f = bdao.deletebook(book);
-            if (f) {
+            if (f){
                 HttpSession session = req.getSession();
-                session.setAttribute("message", true);
+                session.setAttribute("message",true);
                 resp.sendRedirect("/Library/deletebook.jsp");
-            } else {
+            }else {
                 HttpSession session = req.getSession();
-                session.setAttribute("message", false);
-                session.setAttribute("error_del_admin", "删除失败");
+                session.setAttribute("message",false);
+                session.setAttribute("error_del_admin","删除失败");
                 resp.sendRedirect("/Library/deletebook.jsp");
             }
         }

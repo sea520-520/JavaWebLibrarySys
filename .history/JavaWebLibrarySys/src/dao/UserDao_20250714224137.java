@@ -9,47 +9,47 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class UserDao {
-    public String login(User u) {
+    public String login(User u){
 
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
 
-        // 查询语句
+        //查询语句
         String select = "select * from user where username = ?";
 
         try {
-            if (u.getName().equals("admin") && u.getPassword().equals("123456")) {
+            if (u.getName().equals("admin") && u.getPassword().equals("123456")){
                 return "admin";
             }
             conn = new GetCorn().getConn();
             pst = (PreparedStatement) conn.prepareStatement(select);
-            pst.setString(1, u.getName());
+            pst.setString(1,u.getName());
             rs = pst.executeQuery();
-            if (rs.next()) {
-                if (u.getPassword().equals(rs.getString("password"))) {
+            if (rs.next()){
+                if (u.getPassword().equals(rs.getString("password"))){
                     return "user";
-                } else {
+                }else{
                     return "error";
                 }
-            } else {
+            }else {
                 return "error";
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -57,24 +57,24 @@ public class UserDao {
         return null;
     }
 
-    public ArrayList<User> getuserall() {
+    public ArrayList<User> getuserall(){
         ArrayList<User> List = new ArrayList<>();
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
 
-        // 查询语句
+        //查询语句
         String select = "select * from user";
 
         try {
             conn = new GetCorn().getConn();
             st = conn.createStatement();
             rs = st.executeQuery(select);
-            while (rs.next()) {
+            while (rs.next()){
                 User u = new User();
                 u.setName(rs.getString("username"));
                 u.setRelname(rs.getString("relname"));
@@ -84,14 +84,14 @@ public class UserDao {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -99,11 +99,11 @@ public class UserDao {
         return List;
     }
 
-    public boolean del_user(String name) {
+    public boolean del_user(String name){
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
@@ -113,21 +113,21 @@ public class UserDao {
             conn = new GetCorn().getConn();
             st = conn.createStatement();
             int num = st.executeUpdate(select);
-            if (num > 0) {
+            if (num > 0){
                 return true;
             }
             return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -135,25 +135,25 @@ public class UserDao {
         return false;
     }
 
-    public ArrayList<Borrow> getbook(User u) {
+    public ArrayList<Borrow> getbook(User u){
         ArrayList<Borrow> List = new ArrayList<>();
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
 
-        // 查询语句
+        //查询语句
         String select = "select * from borrow where username = ?";
 
         try {
             conn = new GetCorn().getConn();
             pst = (PreparedStatement) conn.prepareStatement(select);
-            pst.setString(1, u.getName());
+            pst.setString(1,u.getName());
             rs = pst.executeQuery();
-            while (rs.next()) {
+            while (rs.next()){
                 Borrow b = new Borrow();
                 b.setUsername(rs.getString("username"));
                 b.setBookname(rs.getString("bookname"));
@@ -165,14 +165,14 @@ public class UserDao {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -180,17 +180,17 @@ public class UserDao {
         return List;
     }
 
-    public boolean ifbook(Borrow b) {
+    public boolean ifbook(Borrow b){
         ArrayList<Borrow> List = new ArrayList<>();
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
 
-        // 查询语句
+        //查询语句
         String select = "select * from borrow where username = ? and bookname = ?";
 
         try {
@@ -199,9 +199,9 @@ public class UserDao {
             pst.setString(1, b.getUsername());
             pst.setString(2, b.getBookname());
             rs = pst.executeQuery();
-            while (rs.next()) {
+            while (rs.next()){
                 int flag = rs.getInt("flag");
-                if (flag == 0) {
+                if (flag == 0){
                     return true;
                 }
             }
@@ -209,14 +209,14 @@ public class UserDao {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -224,37 +224,36 @@ public class UserDao {
         return false;
     }
 
-    public boolean adduser(User u) {
+    public boolean adduser(User u){
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
 
-        String select = "insert into user() values('" + u.getName() + "', '" + u.getPassword() + "', '" + u.getRelname()
-                + "')";
+        String select = "insert into user() values('"+u.getName()+"', '"+u.getPassword()+"', '"+u.getRelname()+"')";
 
         try {
             conn = new GetCorn().getConn();
             st = conn.createStatement();
             int num = st.executeUpdate(select);
-            if (num > 0) {
+            if (num > 0){
                 return true;
             }
             return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -262,11 +261,11 @@ public class UserDao {
         return false;
     }
 
-    public String getrelname(User u) {
+    public String getrelname(User u){
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
@@ -277,21 +276,21 @@ public class UserDao {
             conn = new GetCorn().getConn();
             st = conn.createStatement();
             rs = st.executeQuery(select);
-            while (rs.next()) {
+            while (rs.next()){
                 String relname = rs.getString("relname");
                 return relname;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
@@ -299,11 +298,11 @@ public class UserDao {
         return null;
     }
 
-    public boolean changepwd(User user, String pwd) {
+    public boolean changepwd(User user, String pwd){
         Connection conn = null;
-        // 初始化st，向数据库发送查询或者更新语句，并返回查询结果
+        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        // 初始化rs，遍历结果表，下表1开始
+        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
 
         PreparedStatement pst = null;
@@ -312,21 +311,21 @@ public class UserDao {
             conn = new GetCorn().getConn();
             st = conn.createStatement();
             int num = st.executeUpdate(select);
-            if (num > 0) {
+            if (num > 0){
                 return true;
             }
             return false;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("数据库驱动没有安装！");
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
             System.out.println("数据库连接失败！");
-        } finally {
-            if (conn != null) {
+        }finally {
+            if (conn != null){
                 try {
                     conn.close();
-                } catch (SQLException e) {
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }

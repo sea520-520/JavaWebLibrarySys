@@ -30,7 +30,7 @@ public class AddAction extends HttpServlet {
         String place = req.getParameter("place");
         String flag_temp = req.getParameter("flag");
         int flag = 0;
-        if (flag_temp.equals("可借")) {
+        if (flag_temp.equals("可借")){
             flag = 1;
         }
         book.setIbsn(ibsn);
@@ -41,14 +41,14 @@ public class AddAction extends HttpServlet {
         book.setFlag(flag);
         BookDao bdao = new BookDao();
         boolean f = bdao.insertbook(book);
-        if (f) {
+        if (f){
             HttpSession session = req.getSession();
-            session.setAttribute("insert", true);
+            session.setAttribute("insert",true);
             resp.sendRedirect("/Library/insertbook.jsp");
-        } else {
+        }else {
             HttpSession session = req.getSession();
-            session.setAttribute("insert", false);
-            session.setAttribute("error_info", "图书编号重复或图书已存在");
+            session.setAttribute("insert",false);
+            session.setAttribute("error_info","图书编号重复或图书已存在");
             resp.sendRedirect("/Library/insertbook.jsp");
         }
     }

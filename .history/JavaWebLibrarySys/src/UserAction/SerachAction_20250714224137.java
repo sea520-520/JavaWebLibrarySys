@@ -25,14 +25,14 @@ public class SerachAction extends HttpServlet {
         BookDao bdao = new BookDao();
         ArrayList<Book> List = new ArrayList<>();
         List = bdao.SearchBook(book);
-        if (List != null && List.size() > 0) {
+        if (List!=null && List.size()>0){
             HttpSession session = req.getSession();
-            session.setAttribute("search", true);
-            session.setAttribute("List", List);
+            session.setAttribute("search",true);
+            session.setAttribute("List",List);
             resp.sendRedirect("/Library/searchbook.jsp");
-        } else {
+        }else {
             HttpSession session = req.getSession();
-            session.setAttribute("search", false);
+            session.setAttribute("search",false);
             resp.sendRedirect("/Library/user_search.jsp");
         }
     }

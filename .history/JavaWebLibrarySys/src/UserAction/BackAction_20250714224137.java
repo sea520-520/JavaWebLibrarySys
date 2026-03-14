@@ -29,7 +29,7 @@ public class BackAction extends HttpServlet {
         borrow.setBookname(bookname);
         UserDao udao = new UserDao();
         boolean b = udao.ifbook(borrow);
-        if (b) {
+        if (b){
             IODao idao = new IODao();
             boolean f = idao.backbook(borrow);
             if (f) {
@@ -38,34 +38,34 @@ public class BackAction extends HttpServlet {
                 BookDao bdao = new BookDao();
                 ArrayList<Book> book = new ArrayList<Book>();
                 book = bdao.SearchBook(temp);
-                if (book != null && book.size() > 0) {
+                if (book != null && book.size()>0){
                     Book tmp = new Book();
                     tmp = book.get(0);
                     int sum = tmp.getNum();
                     sum = sum + 1;
                     boolean ff = bdao.addsnum(bookname, sum);
-                    if (ff) {
+                    if (ff){
                         HttpSession session = req.getSession();
-                        session.setAttribute("back", true);
+                        session.setAttribute("back",true);
                         resp.sendRedirect("/Library/backbook.jsp");
-                    } else {
+                    }else {
                         HttpSession session = req.getSession();
-                        session.setAttribute("back", false);
+                        session.setAttribute("back",false);
                         resp.sendRedirect("/Library/backbook.jsp");
                     }
-                } else {
+                }else {
                     HttpSession session = req.getSession();
-                    session.setAttribute("back", false);
+                    session.setAttribute("back",false);
                     resp.sendRedirect("/Library/backbook.jsp");
                 }
-            } else {
+            }else {
                 HttpSession session = req.getSession();
-                session.setAttribute("back", false);
+                session.setAttribute("back",false);
                 resp.sendRedirect("/Library/backbook.jsp");
             }
-        } else {
+        }else {
             HttpSession session = req.getSession();
-            session.setAttribute("back", false);
+            session.setAttribute("back",false);
             resp.sendRedirect("/Library/backbook.jsp");
         }
     }

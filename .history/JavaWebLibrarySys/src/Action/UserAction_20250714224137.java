@@ -24,7 +24,7 @@ public class UserAction extends HttpServlet {
         UserDao udao = new UserDao();
         user = udao.getuserall();
         HttpSession session = req.getSession();
-        session.setAttribute("user", user);
+        session.setAttribute("user",user);
         resp.sendRedirect("/Library/getuserall.jsp");
     }
 

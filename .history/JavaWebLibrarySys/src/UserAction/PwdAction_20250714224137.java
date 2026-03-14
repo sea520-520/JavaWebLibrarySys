@@ -27,30 +27,30 @@ public class PwdAction extends HttpServlet {
         user.setPassword(pwd);
         UserDao udao = new UserDao();
         String result = udao.login(user);
-        if (result.equals("error")) {
+        if (result.equals("error")){
             HttpSession session = req.getSession();
-            session.setAttribute("username", username);
-            session.setAttribute("flag", false);
-            session.setAttribute("mes_error", "原密码错误");
+            session.setAttribute("username",username);
+            session.setAttribute("flag",false);
+            session.setAttribute("mes_error","原密码错误");
             resp.sendRedirect("/Library/change_pwd.jsp");
-        } else {
-            if (!n_pwd.equals(a_n_pwd)) {
+        }else {
+            if (!n_pwd.equals(a_n_pwd)){
                 HttpSession session = req.getSession();
-                session.setAttribute("username", username);
-                session.setAttribute("flag", false);
-                session.setAttribute("mes_error", "密码错误");
+                session.setAttribute("username",username);
+                session.setAttribute("flag",false);
+                session.setAttribute("mes_error","密码错误");
                 resp.sendRedirect("/Library/change_pwd.jsp");
-            } else {
+            }else {
                 boolean f = udao.changepwd(user, n_pwd);
-                if (f) {
+                if (f){
                     HttpSession session = req.getSession();
-                    session.setAttribute("username", username);
-                    session.setAttribute("flag", true);
+                    session.setAttribute("username",username);
+                    session.setAttribute("flag",true);
                     resp.sendRedirect("/Library/change_pwd.jsp");
-                } else {
+                }else {
                     HttpSession session = req.getSession();
-                    session.setAttribute("username", username);
-                    session.setAttribute("flag", false);
+                    session.setAttribute("username",username);
+                    session.setAttribute("flag",false);
                     session.setAttribute("mes_error", "修改失败");
                     resp.sendRedirect("/Library/change_pwd.jsp");
                 }
