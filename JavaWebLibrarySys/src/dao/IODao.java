@@ -10,72 +10,51 @@ import java.util.ArrayList;
 public class IODao {
     public boolean lendbook(Borrow b){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
 
-        String select = "insert into borrow() values('"+b.getUsername()+"', '"+b.getRelname()+"', '"+b.getBookname()+"', '"+b.getDataime()+"', "+b.getFlag()+")";
+        String select = "insert into borrow(username, relname, bookname, dataime, flag) values(?, ?, ?, ?, ?)";
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int num = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setString(1, b.getUsername());
+            pst.setString(2, b.getRelname());
+            pst.setString(3, b.getBookname());
+            pst.setString(4, b.getDataime());
+            pst.setInt(5, b.getFlag());
+            int num = pst.executeUpdate();
             if (num > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
         return false;
     }
 
     public boolean backbook(Borrow b){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
 
-        String select = "update borrow set flag = 1 where username = '" + b.getUsername() + "' and bookname = '" + b.getBookname() + "'";
+        String select = "update borrow set flag = 1 where username = ? and bookname = ?";
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int num = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setString(1, b.getUsername());
+            pst.setString(2, b.getBookname());
+            int num = pst.executeUpdate();
             if (num > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
         return false;
     }
@@ -84,17 +63,13 @@ public class IODao {
         ArrayList<Borrow> List = new ArrayList<>();
 
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
-
-        PreparedStatement pst = null;
 
         String select = "select * from borrow";
 
         try {
-            conn = new GetCorn().getConn();
+            conn = GetCorn.getConnection();
             st = conn.createStatement();
             rs = st.executeQuery(select);
             while (rs.next()){
@@ -107,20 +82,11 @@ public class IODao {
                 List.add(borrow);
             }
             return List;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, st, rs);
         }
         return List;
     }
