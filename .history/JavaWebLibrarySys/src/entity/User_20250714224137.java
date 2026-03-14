@@ -5,7 +5,7 @@ public class User {
     private String password;
     private String relname;
 
-    public User() {
+    public User(){
 
     }
 

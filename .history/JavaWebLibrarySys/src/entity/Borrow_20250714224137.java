@@ -7,7 +7,7 @@ public class Borrow {
     private String dataime;
     private int flag;
 
-    public void Borrow() {
+    public void Borrow(){
 
     }
 

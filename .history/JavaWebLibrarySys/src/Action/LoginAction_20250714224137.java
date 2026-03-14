@@ -15,10 +15,8 @@ import java.io.IOException;
 @WebServlet("/LoginAction")
 public class LoginAction extends HttpServlet {
     UserDao udao = new UserDao();
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // 设置请求编码、响应方式和编码方式
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        //设置请求编码、响应方式和编码方式
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
@@ -30,17 +28,17 @@ public class LoginAction extends HttpServlet {
         user.setName(name);
         user.setPassword(pwd);
         String result = udao.login(user);
-        if (result.equals("user")) {
+        if (result.equals("user")){
             HttpSession session = request.getSession();
-            session.setAttribute("username", name);
+            session.setAttribute("username",name);
             response.sendRedirect("/Library/user_view.jsp");
-        } else if (result.equals("admin")) {
+        }else if (result.equals("admin")){
             HttpSession session = request.getSession();
-            session.setAttribute("user", name);
+            session.setAttribute("user",name);
             response.sendRedirect("/Library/admin_view.jsp");
-        } else {
+        }else {
             HttpSession session = request.getSession();
-            session.setAttribute("error", "信息错误");
+            session.setAttribute("error","信息错误");
             response.sendRedirect("/Library/index.jsp");
         }
     }

@@ -22,35 +22,35 @@ public class AddUserAction extends HttpServlet {
         String relname = req.getParameter("relname");
         String password = req.getParameter("password");
         String pwd = req.getParameter("pwd");
-        if (password.equals(pwd)) {
+        if (password.equals(pwd)){
             User u = new User();
             u.setName(name);
             u.setRelname(relname);
             u.setPassword(password);
             UserDao udao = new UserDao();
             String f = udao.login(u);
-            if (!f.equals("user")) {
+            if (!f.equals("user")){
                 boolean b = udao.adduser(u);
-                if (b) {
+                if (b){
                     HttpSession session = req.getSession();
-                    session.setAttribute("username", u.getName());
+                    session.setAttribute("username",u.getName());
                     resp.sendRedirect("/Library/user_view.jsp");
-                } else {
+                }else {
                     HttpSession session = req.getSession();
-                    session.setAttribute("enroll", false);
-                    session.setAttribute("enroll_info", "请检查输入信息是否正确");
+                    session.setAttribute("enroll",false);
+                    session.setAttribute("enroll_info","请检查输入信息是否正确");
                     resp.sendRedirect("/Library/enroll.jsp");
                 }
-            } else {
+            }else {
                 HttpSession session = req.getSession();
-                session.setAttribute("enroll", false);
-                session.setAttribute("enroll_info", "用户已存在");
+                session.setAttribute("enroll",false);
+                session.setAttribute("enroll_info","用户已存在");
                 resp.sendRedirect("/Library/enroll.jsp");
             }
-        } else {
+        }else {
             HttpSession session = req.getSession();
-            session.setAttribute("enroll", false);
-            session.setAttribute("enroll_info", "密码错误");
+            session.setAttribute("enroll",false);
+            session.setAttribute("enroll_info","密码错误");
             resp.sendRedirect("/Library/enroll.jsp");
         }
     }

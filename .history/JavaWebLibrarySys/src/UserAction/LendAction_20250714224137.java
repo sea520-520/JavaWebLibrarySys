@@ -38,10 +38,10 @@ public class LendAction extends HttpServlet {
         List = bdao.SearchBook(b);
         User u = new User();
         u.setName(username);
-        if (List != null && List.size() > 0) {
+        if (List!= null && List.size()>0){
             Book temp = new Book();
             temp = List.get(0);
-            if (temp.getFlag() == 1 && temp.getNum() > 0) {
+            if (temp.getFlag() == 1 && temp.getNum()>0){
                 UserDao udao = new UserDao();
                 String relname = udao.getrelname(u);
                 int temp_sum = temp.getNum();
@@ -54,24 +54,24 @@ public class LendAction extends HttpServlet {
                 book.setFlag(0);
                 IODao ioDao = new IODao();
                 boolean f = ioDao.lendbook(book);
-                if (f) {
+                if (f){
                     boolean ff = bdao.lessnum(temp.getName(), temp_sum);
                     HttpSession session = req.getSession();
-                    session.setAttribute("lend", true);
+                    session.setAttribute("lend",true);
                     resp.sendRedirect("/Library/lendbook.jsp");
-                } else {
+                }else {
                     HttpSession session = req.getSession();
-                    session.setAttribute("lend", false);
+                    session.setAttribute("lend",false);
                     resp.sendRedirect("/Library/lendbook.jsp");
                 }
-            } else {
+            }else {
                 HttpSession session = req.getSession();
-                session.setAttribute("lend", false);
+                session.setAttribute("lend",false);
                 resp.sendRedirect("/Library/lendbook.jsp");
             }
-        } else {
+        }else {
             HttpSession session = req.getSession();
-            session.setAttribute("lend", false);
+            session.setAttribute("lend",false);
             resp.sendRedirect("/Library/lendbook.jsp");
         }
     }

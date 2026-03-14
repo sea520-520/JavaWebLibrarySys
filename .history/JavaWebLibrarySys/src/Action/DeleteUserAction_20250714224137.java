@@ -27,10 +27,10 @@ public class DeleteUserAction extends HttpServlet {
         user.setName(username);
         UserDao udao = new UserDao();
         ArrayList<Borrow> List = new ArrayList<>();
-        List = udao.getbook(user); // 返回该用户借书所有信息
-        // 用户有借书，书未归还不能删除
-        if (List != null && List.size() > 0) {
-            for (int i = 0; i < List.size(); i++) {
+        List = udao.getbook(user); //返回该用户借书所有信息
+        //用户有借书，书未归还不能删除
+        if (List!=null && List.size()>0){
+            for(int i = 0; i < List.size(); i++) {
                 Borrow b = List.get(i);
                 if (b.getFlag() == 0) {
                     HttpSession session = req.getSession();
@@ -41,26 +41,26 @@ public class DeleteUserAction extends HttpServlet {
                 }
             }
             boolean f = udao.del_user(username);
-            if (f) {
+            if (f){
                 HttpSession session = req.getSession();
-                session.setAttribute("user_del", true);
+                session.setAttribute("user_del",true);
                 resp.sendRedirect("/Library/del_user.jsp");
-            } else {
+            }else {
                 HttpSession session = req.getSession();
-                session.setAttribute("user_del", false);
-                session.setAttribute("error_del", "用户删除失败");
+                session.setAttribute("user_del",false);
+                session.setAttribute("error_del","用户删除失败");
                 resp.sendRedirect("/Library/del_user.jsp");
             }
-        } else { // 用户无借书，直接删除
+        }else { //用户无借书，直接删除
             boolean f = udao.del_user(username);
-            if (f) {
+            if (f){
                 HttpSession session = req.getSession();
-                session.setAttribute("user_del", true);
+                session.setAttribute("user_del",true);
                 resp.sendRedirect("/Library/del_user.jsp");
-            } else {
+            }else {
                 HttpSession session = req.getSession();
-                session.setAttribute("user_del", false);
-                session.setAttribute("error_del", "用户删除失败，请查看用户是否存在");
+                session.setAttribute("user_del",false);
+                session.setAttribute("error_del","用户删除失败，请查看用户是否存在");
                 resp.sendRedirect("/Library/del_user.jsp");
             }
         }
