@@ -11,17 +11,13 @@ public class BookDao {
     public ArrayList<Book> getBook(){
         ArrayList<Book> List = new ArrayList<>();
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
         Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
         ResultSet rs = null;
-
-        PreparedStatement pst = null;
 
         String select = "select * from book";
 
         try {
-            conn = new GetCorn().getConn();
+            conn = GetCorn.getConnection();
             st = conn.createStatement();
             rs = st.executeQuery(select);
             while (rs.next()){
@@ -35,20 +31,11 @@ public class BookDao {
                 List.add(book);
             }
             return List;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, st, rs);
         }
         return List;
     }
@@ -56,18 +43,14 @@ public class BookDao {
     public ArrayList<Book> SearchBook(Book b){
         ArrayList<Book> List = new ArrayList<>();
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
+        ResultSet rs = null;
 
         String select = "select * from book where name = ?";
 
         try {
-            conn = new GetCorn().getConn();
-            pst = (PreparedStatement) conn.prepareStatement(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
             pst.setString(1,b.getName());
             rs = pst.executeQuery();
             while (rs.next()){
@@ -80,20 +63,11 @@ public class BookDao {
                 List.add(book);
             }
             return List;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, rs);
         }
         return List;
     }
@@ -101,19 +75,16 @@ public class BookDao {
     public ArrayList<Borrow> ifborrowbook(Borrow b){
         ArrayList<Borrow> List = new ArrayList<>();
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
+        PreparedStatement pst = null;
         ResultSet rs = null;
 
-        PreparedStatement pst = null;
-
-        String select = "select * from borrow where bookname = '"+ b.getBookname() + "'";
+        String select = "select * from borrow where bookname = ?";
 
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            rs = st.executeQuery(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setString(1, b.getBookname());
+            rs = pst.executeQuery();
             while (rs.next()){
                 Borrow borrow = new Borrow();
                 borrow.setUsername(rs.getString("username"));
@@ -124,170 +95,116 @@ public class BookDao {
                 List.add(borrow);
             }
             return List;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, rs);
         }
         return List;
     }
 
     public boolean changebook(Book b){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
 
-        String select = "update book set IBSN = '"+b.getIbsn()+"', name = '"+b.getName()+"', num = "+b.getNum()+", place = '"+b.getPlace()+"', dataime = '"+b.getDataime()+"', flag = "+b.getFlag()+" where IBSN = '"+b.getIbsn()+"'";
+        String select = "update book set IBSN = ?, name = ?, num = ?, place = ?, dataime = ?, flag = ? where IBSN = ?";
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int num = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setString(1, b.getIbsn());
+            pst.setString(2, b.getName());
+            pst.setInt(3, b.getNum());
+            pst.setString(4, b.getPlace());
+            pst.setString(5, b.getDataime());
+            pst.setInt(6, b.getFlag());
+            pst.setString(7, b.getIbsn());
+            int num = pst.executeUpdate();
             if (num > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
         return false;
     }
 
     public boolean deletebook(Book b){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
 
-        String select = "delete from book where name = '" + b.getName() + "'";
+        String select = "delete from book where name = ?";
 
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int num = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setString(1, b.getName());
+            int num = pst.executeUpdate();
             if (num > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
         return false;
     }
 
     public boolean insertbook(Book b){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
 
-        String select = "insert into book() values('"+b.getIbsn()+"', '"+b.getName()+"', "+b.getNum()+", '"+b.getPlace()+"', '"+b.getDataime()+"', "+b.getFlag()+")";
-
-        /*
-        * "insert into book()
-        * values('"+b.getIbsn()+"', '"+b.getName()+"', "+b.get()+", '"+b.get()+"', '"+b.get()+"', "+b.get())
-        * */
+        String select = "insert into book(IBSN, name, num, place, dataime, flag) values(?, ?, ?, ?, ?, ?)";
 
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int num = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setString(1, b.getIbsn());
+            pst.setString(2, b.getName());
+            pst.setInt(3, b.getNum());
+            pst.setString(4, b.getPlace());
+            pst.setString(5, b.getDataime());
+            pst.setInt(6, b.getFlag());
+            int num = pst.executeUpdate();
             if (num > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
         return false;
     }
 
     public boolean lessnum(String name, int num){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
-        String select = "update book set num = " + num + " where name = '" + name + "'";
+        String select = "update book set num = ? where name = ?";
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int n = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setInt(1, num);
+            pst.setString(2, name);
+            int n = pst.executeUpdate();
             if (n > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
 
         return false;
@@ -295,35 +212,23 @@ public class BookDao {
 
     public boolean addsnum(String name, int num){
         Connection conn = null;
-        //初始化st，向数据库发送查询或者更新语句，并返回查询结果
-        Statement st = null;
-        //初始化rs，遍历结果表，下表1开始
-        ResultSet rs = null;
-
         PreparedStatement pst = null;
-        String select = "update book set num = " + num + " where name = '" + name + "'";
+        String select = "update book set num = ? where name = ?";
         try {
-            conn = new GetCorn().getConn();
-            st = conn.createStatement();
-            int n = st.executeUpdate(select);
+            conn = GetCorn.getConnection();
+            pst = conn.prepareStatement(select);
+            pst.setInt(1, num);
+            pst.setString(2, name);
+            int n = pst.executeUpdate();
             if (n > 0){
                 return true;
             }
             return false;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("数据库驱动没有安装！");
         } catch (SQLException e){
             e.printStackTrace();
-            System.out.println("数据库连接失败！");
-        }finally {
-            if (conn != null){
-                try {
-                    conn.close();
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }
+            System.out.println("数据库操作失败！");
+        } finally {
+            GetCorn.close(conn, pst, null);
         }
 
         return false;
@@ -332,30 +237,6 @@ public class BookDao {
     public static void main(String[] args) {
         BookDao bdao = new BookDao();
         ArrayList<Book> List = new ArrayList<>();
-//        Book book = new Book();
-//        List = bdao.getBook();
-//        if(List!=null && List.size() > 0) {
-//            for (int i = 0; i < List.size(); i++) {
-//                Book b = List.get(i);
-//                System.out.println(b.getName());
-//            }
-//        }
-//        Book book = new Book();
-////        book.setName("计算机导论");
-////        boolean f = bdao.deletebook(book);
-////        if (f) {
-////            System.out.println("success");
-////        }
-////        book.setIbsn("4");
-//        book.setName("555");
-////        book.setNum(5);
-////        book.setPlace("总馆");
-////        book.setDataime("20230503");
-////        book.setFlag(1);
-//        List = bdao.SearchBook(book);
-//        if (List!=null &&List.size()>0){
-//            System.out.println("true");
-//        }
         boolean b = bdao.addsnum("计算机网络",10);
         System.out.println(b);
     }
